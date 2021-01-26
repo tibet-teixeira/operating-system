@@ -1,0 +1,5 @@
+Análise do programa C
+
+
+
+O programa C utiliza PThreads. O método Main cria uma thread e espera que o usuário passe um número não negativo. Para executar a thread, é passado, além da thread, uma função, runner, e seus parâmetros como argumento para a função pthread_create. Com isso, esta função é executado em outra thread enquanto o método Main espera a finalização do cálculo através da função pthread_join. A função runner calcula o somatório dos N inteiros, no qual N é o valor recebido do parâmetro. Após a execução do somatório, a função runner invoca a função pthread_exit(0), que retorna para a thread principal.

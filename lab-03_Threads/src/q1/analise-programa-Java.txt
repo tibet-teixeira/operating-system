@@ -1,0 +1,5 @@
+Análise do programa JAVA
+
+
+Na classe Driver temos um processo que ao ser passado um inteiro, é somado a sequência de inteiros até chegar ao mesmo.
+Nesse código, esse processo é realizado de forma síncrona, mas utiliza uma thread separada, a qual agregará o seu valor a thread principal após terminar sua execução. Todo esse processo é possibilitado pelo método .join, o qual só retorna o resultado para a thread principal quando o processo da auxiliar acaba
