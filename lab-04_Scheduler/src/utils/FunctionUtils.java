@@ -68,7 +68,7 @@ public class FunctionUtils {
         int burstTime = Integer.parseInt(values[2]);
         int priority = Integer.parseInt(values[3]);
 
-        Process process = new Process(id, priority, burstTime, arrivalTime);
+        Process process = new Process(id, priority, arrivalTime, burstTime);
 
         BCP bcp = new BCP(process);
         readyQueue.add(bcp);

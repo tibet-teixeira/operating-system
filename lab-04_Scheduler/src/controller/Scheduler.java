@@ -5,6 +5,8 @@ import model.queue.Queue;
 import model.queue.RunningQueue;
 import model.queue.TerminatedQueue;
 
+import java.util.Comparator;
+
 public class Scheduler {
     private Algorithm algorithm;
     private Queue readyQueue;
@@ -18,8 +20,14 @@ public class Scheduler {
         this.terminatedQueue = new TerminatedQueue();
     }
 
+    private void sortProcessesList() {
+        this.readyQueue.getAll().sort(Comparator.comparingInt(o -> o.getProcess().getArrivalTime()));
+    }
+
     public void run() {
-        System.out.println("Algorithm: " + algorithm);
-        readyQueue.showAll();
+        sortProcessesList();
+        algorithm.run(readyQueue, runningQueue, terminatedQueue);
+
+        terminatedQueue.showAll();
     }
 }

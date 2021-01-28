@@ -12,6 +12,10 @@ public abstract class Queue {
         blocks = new ArrayList<>();
     }
 
+    public List<BCP> getAll() {
+        return this.blocks;
+    }
+
     public void showAll() {
         blocks.forEach(el -> System.out.println("Process id: " + el.getIdProcess()));
     }
@@ -26,5 +30,13 @@ public abstract class Queue {
 
     public void remove(BCP bcp) {
         this.blocks.remove(bcp);
+    }
+
+    public BCP pop() {
+        return this.blocks.remove(0);
+    }
+
+    public int length() {
+        return this.blocks.size();
     }
 }
