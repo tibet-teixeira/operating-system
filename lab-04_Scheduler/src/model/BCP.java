@@ -6,6 +6,7 @@ public class BCP {
     private int lastUnitTimeExecuted;
     private int totalWaitingTime;
     private int turnaroundTime;
+    private boolean firstExecuted;
 
     public BCP(Process process) {
         this.process = process;
@@ -13,6 +14,7 @@ public class BCP {
         this.lastUnitTimeExecuted = 0;
         this.totalWaitingTime = 0;
         this.turnaroundTime = 0;
+        this.firstExecuted = true;
     }
 
     public int getIdProcess() {
@@ -53,5 +55,13 @@ public class BCP {
 
     public void setTurnaroundTime(int turnaroundTime) {
         this.turnaroundTime = turnaroundTime;
+    }
+
+    public boolean isFirstExecuted() {
+        return firstExecuted;
+    }
+
+    public void setFirstExecuted(boolean firstExecuted) {
+        this.firstExecuted = firstExecuted;
     }
 }
