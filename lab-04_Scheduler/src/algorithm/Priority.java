@@ -11,7 +11,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class Priority extends Algorithm {
-    private BCP getShortestJob(Queue readyQueue, int currentUnitTime) {
+    private BCP getPriorityJob(Queue readyQueue, int currentUnitTime) {
         Predicate<BCP> byArrivalTime = bcp -> bcp.getProcess().getArrivalTime() <= currentUnitTime;
         List<BCP> bcps = readyQueue.getAll().stream().filter(byArrivalTime).collect(Collectors.toList());
 
@@ -36,7 +36,7 @@ public class Priority extends Algorithm {
         int waitingTime;
 
         while (readyQueue.length() > 0) {
-            bcp = getShortestJob(readyQueue, currentUnitTime);
+            bcp = getPriorityJob(readyQueue, currentUnitTime);
 
             if (bcp == null) {
                 currentUnitTime += 1;
