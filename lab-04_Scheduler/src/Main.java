@@ -19,13 +19,14 @@ public class Main {
 
         String filename = args[0];
         Algorithm algorithm = FunctionUtils.defineAlgorithm(args[1]);
-        int exitType = Integer.parseInt(args[2]);
+        int exitType = FunctionUtils.defineExitType(args[2]);
 
         if (algorithm instanceof RoundRobin) {
             if (args.length == 3)
                 ((RoundRobin) algorithm).setQuantum(1);
             else
-                ((RoundRobin) algorithm).setQuantum(Integer.parseInt(args[3]));
+                
+                ((RoundRobin) algorithm).setQuantum(FunctionUtils.defineQuantum(args[3]));
         }
 
         Queue readyQueue = new ReadyQueue();

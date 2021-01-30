@@ -23,7 +23,7 @@ public class FCFS extends Algorithm {
             bcp.setTotalBurstExecuted(process.getBurstTime());
             bcp.setTurnaroundTime(waitingTime + process.getBurstTime());
 
-            currentUnitTime += waitingTime + process.getBurstTime();
+            currentUnitTime += process.getBurstTime();
             bcp.setLastUnitTimeExecuted(currentUnitTime);
 
             bcp = runningQueue.pop();
