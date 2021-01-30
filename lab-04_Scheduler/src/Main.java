@@ -1,4 +1,5 @@
 import algorithm.*;
+import controller.ExecutionReport;
 import controller.Scheduler;
 import model.queue.Queue;
 import model.queue.ReadyQueue;
@@ -19,13 +20,11 @@ public class Main {
 
         String filename = args[0];
         Algorithm algorithm = FunctionUtils.defineAlgorithm(args[1]);
-        int exitType = FunctionUtils.defineExitType(args[2]);
 
         if (algorithm instanceof RoundRobin) {
             if (args.length == 3)
                 ((RoundRobin) algorithm).setQuantum(1);
             else
-                
                 ((RoundRobin) algorithm).setQuantum(FunctionUtils.defineQuantum(args[3]));
         }
 
@@ -33,5 +32,8 @@ public class Main {
         FunctionUtils.parseCSV(filename, readyQueue);
         Scheduler scheduler = new Scheduler(algorithm, readyQueue);
         scheduler.run();
+
+        ExecutionReport executionReport = FunctionUtils.defineExitType(args[2], scheduler.getTerminatedQueue());
+        executionReport.showResult();
     }
 }

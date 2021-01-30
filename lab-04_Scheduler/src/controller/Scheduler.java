@@ -27,7 +27,9 @@ public class Scheduler {
     public void run() {
         sortProcessesList();
         algorithm.run(readyQueue, runningQueue, terminatedQueue);
+    }
 
-        terminatedQueue.showAll();
+    public Queue getTerminatedQueue() {
+        return this.terminatedQueue;
     }
 }

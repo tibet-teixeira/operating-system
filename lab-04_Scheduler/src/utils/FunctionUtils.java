@@ -1,6 +1,9 @@
 package utils;
 
 import algorithm.*;
+import controller.ExecutionReport;
+import controller.ProcessList;
+import controller.Statistic;
 import exception.*;
 import model.BCP;
 import model.Process;
@@ -94,14 +97,17 @@ public class FunctionUtils {
         }
     }
 
-    public static int defineExitType(String arg) {
+    public static ExecutionReport defineExitType(String arg, Queue terminatedQueue) {
         int exitType = Integer.parseInt(arg);
-    
-        if (exitType != 1 && exitType != 2) {
-            throw new ExitTypeException();
-        }
 
-        return exitType;
+        switch (exitType) {
+            case 1:
+                return new Statistic(terminatedQueue);
+            case 2:
+                return new ProcessList(terminatedQueue);
+            default:
+                throw new ExitTypeException();
+        }
     }
 
     public static int defineQuantum(String arg) {
@@ -117,8 +123,7 @@ public class FunctionUtils {
     public static void verifyArgs(String[] args) {
         String messageException = "Arguments do not follow the standard. Check the correct way in --help";
 
-        if (((args.length == 1) && !(args[0].toLowerCase().equals("--help"))) || ((args.length != 1) && (args.length != 3) && (args.length !=4)))
+        if (((args.length == 1) && !(args[0].toLowerCase().equals("--help"))) || ((args.length != 1) && (args.length != 3) && (args.length != 4)))
             throw new IllegalArgumentException(messageException);
     }
-
 }
