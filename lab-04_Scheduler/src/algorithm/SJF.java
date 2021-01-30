@@ -16,20 +16,15 @@ public class SJF extends Algorithm {
         Predicate<BCP> byArrivalTime = bcp -> bcp.getProcess().getArrivalTime() <= currentUnitTime;
         List<BCP> bcps = readyQueue.getAll().stream().filter(byArrivalTime).collect(Collectors.toList());
 
-        if(bcps.size() == 0) {
+        if (bcps.size() == 0) {
             return null;
-        } 
+        }
 
         if (bcps.size() == 1) {
             return bcps.get(0);
         }
-    
-        Collections.sort(bcps, new Comparator<BCP>() {
-            @Override
-           public int compare(BCP bcp1, BCP bcp2) {
-                   return bcp1.getProcess().getBurstTime() - bcp2.getProcess().getBurstTime();
-           }
-        });
+
+        bcps.sort(Comparator.comparingInt(bcp -> bcp.getProcess().getBurstTime()));
 
         return bcps.get(0);
     }
@@ -43,12 +38,13 @@ public class SJF extends Algorithm {
 
         while (readyQueue.length() > 0) {
             bcp = getShortestJob(readyQueue, currentUnitTime);
-            
-            if(bcp == null) {
+
+            if (bcp == null) {
                 currentUnitTime += 1;
+                continue;
             } else {
                 readyQueue.remove(bcp);
-    
+
                 process = bcp.getProcess();
                 runningQueue.add(bcp);
 
