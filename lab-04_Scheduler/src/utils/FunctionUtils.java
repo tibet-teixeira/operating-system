@@ -1,7 +1,7 @@
 package utils;
 
 import algorithm.*;
-import exception.AlgorithmException;
+import exception.*;
 import model.BCP;
 import model.Process;
 import model.queue.Queue;
@@ -93,16 +93,31 @@ public class FunctionUtils {
         }
     }
 
+    public static int defineExitType(String arg) {
+        int exitType = Integer.parseInt(arg);
+    
+        if (exitType != 1 && exitType != 2) {
+            throw new ExitTypeException();
+        }
+
+        return exitType;
+    }
+
+    public static int defineQuantum(String arg) {
+        int quantum = Integer.parseInt(arg);
+
+        if (quantum < 1) {
+            throw new QuantumException();
+        }
+
+        return quantum;
+    }
+
     public static void verifyArgs(String[] args) {
         String messageException = "Arguments do not follow the standard. Check the correct way in --help";
 
-        if ((args.length == 1) && !(args[0].toLowerCase().equals("--help")))
+        if (((args.length == 1) && !(args[0].toLowerCase().equals("--help"))) || ((args.length != 1) && (args.length != 3) && (args.length !=4)))
             throw new IllegalArgumentException(messageException);
-
-        if (args.length == 2)
-            throw new IllegalArgumentException(messageException);
-
     }
-
 
 }
