@@ -4,7 +4,22 @@ import model.BCP;
 import model.Process;
 import model.queue.Queue;
 
+import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
 public class FCFS extends Algorithm {
+
+    private BCP getNextJob(Queue readyQueue, int currentUnitTime) {
+        Predicate<BCP> byArrivalTime = bcp -> bcp.getProcess().getArrivalTime() <= currentUnitTime;
+        List<BCP> bcps = readyQueue.getAll().stream().filter(byArrivalTime).collect(Collectors.toList());
+
+        if (bcps.size() == 0) {
+            return null;
+        }
+
+        return bcps.get(0);
+    }
 
     @Override
     public void run(Queue readyQueue, Queue runningQueue, Queue terminatedQueue) {
@@ -13,9 +28,16 @@ public class FCFS extends Algorithm {
         int currentUnitTime = 0;
         int waitingTime;
 
-        // TODO: Function that returns a process with a valid current processing time
         while (readyQueue.length() > 0) {
-            bcp = readyQueue.pop();
+            bcp = getNextJob(readyQueue, currentUnitTime);
+
+            if (bcp == null) {
+                currentUnitTime += 1;
+                continue;
+            } else {
+                readyQueue.remove(bcp);
+            }
+
             process = bcp.getProcess();
             runningQueue.add(bcp);
 
