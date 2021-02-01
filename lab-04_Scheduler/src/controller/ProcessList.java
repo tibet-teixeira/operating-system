@@ -1,6 +1,9 @@
 package controller;
 
+import model.BCP;
 import model.queue.Queue;
+
+import java.util.Comparator;
 
 public class ProcessList extends ExecutionReport {
     public ProcessList(Queue terminatedQueue) {
@@ -9,8 +12,8 @@ public class ProcessList extends ExecutionReport {
 
     @Override
     public void showResult() {
-        //TODO: Implement the method that returns the results
         System.out.println("PROCESS LIST");
+        super.terminatedQueue.getAll().sort(Comparator.comparingInt(BCP::getFirstUnitTimeExecuted));
         super.terminatedQueue.showAll();
     }
 }
