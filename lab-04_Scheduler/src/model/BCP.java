@@ -4,6 +4,7 @@ public class BCP {
     private Process process;
     private int totalBurstExecuted;
     private int lastUnitTimeExecuted;
+    private int firstUnitTimeExecuted;
     private int totalWaitingTime;
     private int turnaroundTime;
     private boolean firstExecuted;
@@ -12,6 +13,7 @@ public class BCP {
         this.process = process;
         this.totalBurstExecuted = 0;
         this.lastUnitTimeExecuted = 0;
+        this.firstUnitTimeExecuted = 0;
         this.totalWaitingTime = 0;
         this.turnaroundTime = 0;
         this.firstExecuted = true;
@@ -55,6 +57,18 @@ public class BCP {
 
     public void setTurnaroundTime(int turnaroundTime) {
         this.turnaroundTime = turnaroundTime;
+    }
+
+    public int getFirstUnitTimeExecuted() {
+        return firstUnitTimeExecuted;
+    }
+
+    public void setFirstUnitTimeExecuted(int firstUnitTimeExecuted) {
+        this.firstUnitTimeExecuted = firstUnitTimeExecuted;
+    }
+
+    public int getResponseTime() {
+        return this.getFirstUnitTimeExecuted() - this.process.getArrivalTime();
     }
 
     public boolean isFirstExecuted() {

@@ -54,6 +54,7 @@ public class SJFP extends Algorithm {
             if (bcp.isFirstExecuted()) {
                 waitingTime -= process.getArrivalTime();
                 bcp.setFirstExecuted(false);
+                bcp.setFirstUnitTimeExecuted(currentUnitTime);
             }
 
             bcp.setTotalWaitingTime(bcp.getTotalWaitingTime() + waitingTime);

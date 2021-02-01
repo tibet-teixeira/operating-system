@@ -49,6 +49,12 @@ public class SJF extends Algorithm {
                 runningQueue.add(bcp);
 
                 waitingTime = Math.max(currentUnitTime - process.getArrivalTime(), 0);
+
+                if (bcp.isFirstExecuted()) {
+                    bcp.setFirstExecuted(false);
+                    bcp.setFirstUnitTimeExecuted(currentUnitTime);
+                }
+
                 bcp.setTotalWaitingTime(waitingTime);
                 bcp.setTotalBurstExecuted(process.getBurstTime());
                 bcp.setTurnaroundTime(waitingTime + process.getBurstTime());
