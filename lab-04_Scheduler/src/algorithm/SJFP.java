@@ -47,6 +47,7 @@ public class SJFP extends Algorithm {
             }
 
             process = bcp.getProcess();
+            bcp.addRunningTimes();
             runningQueue.add(bcp);
 
             waitingTime = currentUnitTime - bcp.getLastUnitTimeExecuted();

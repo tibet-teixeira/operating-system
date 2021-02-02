@@ -45,6 +45,7 @@ public class RoundRobin extends Algorithm {
             }
 
             process = bcp.getProcess();
+            bcp.addRunningTimes();
             runningQueue.add(bcp);
             totalRemainingBurst = process.getBurstTime() - bcp.getTotalBurstExecuted();
 
