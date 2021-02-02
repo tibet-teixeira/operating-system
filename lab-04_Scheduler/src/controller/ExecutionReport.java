@@ -19,7 +19,8 @@ public abstract class ExecutionReport {
         this.quantum = quantum;
     }
 
-    public void showResult() {
+    public void saveResult() {
         System.out.println("Implementation defined by the subclasses");
     }
+
 }

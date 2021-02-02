@@ -72,6 +72,7 @@ public class Statistic extends ExecutionReport {
         try {
             FileWriter writer = new FileWriter(super.resultsFilePath + "statistic_" + this.algorithm + "_" + formatter.format(date) + "_.csv");
 
+            writer.write("time_total,cpu_usage,throughput_mean,turnaround_mean,waiting_time_mean,response_time_mean,context_switch_mean,number_of_processes\n");
             writer.write(timeTotalProcessed + "," + cpuUsage + "," + throughputMean + "," + turnaroundMean + "," + waitingTimeMean 
                         + "," + responseTimeMean + "," + contextSwitchMean + "," + numberOfProcesses + "\n");
 

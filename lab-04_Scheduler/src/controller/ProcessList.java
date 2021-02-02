@@ -21,10 +21,10 @@ public class ProcessList extends ExecutionReport {
 
         super.terminatedQueue.getAll().sort(Comparator.comparingInt(BCP::getFirstUnitTimeExecuted));
         super.terminatedQueue.showAll();
-        
+
         try {
             FileWriter writer = new FileWriter(super.resultsFilePath + "process_list_" + this.algorithm + "_" + formatter.format(date) + "_.csv");
-
+            writer.write("process_id,turnaround_time\n");
             for (BCP bcp : this.terminatedQueue.getAll()) {
                 writer.write(bcp.getIdProcess() + "," + bcp.getTurnaroundTime() + "\n");
             }
