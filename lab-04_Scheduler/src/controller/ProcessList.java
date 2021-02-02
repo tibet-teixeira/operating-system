@@ -1,38 +1,33 @@
 package controller;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Comparator;
-import java.util.Date;
 
 import model.BCP;
 import model.queue.Queue;
+import utils.FunctionUtils;
 
 public class ProcessList extends ExecutionReport {
-    public ProcessList(Queue terminatedQueue, String outputFile, String algorithm, int quantum) {
-        super(terminatedQueue, outputFile, algorithm, quantum);
+    private static String[] HEADER = new String[]{"process_id", "turnaround_time"};
+
+    public ProcessList(Queue terminatedQueue, String algorithm, int quantum) {
+        super(terminatedQueue, HEADER, algorithm, quantum);
     }
 
     @Override
     public void saveResult() {
-        Date date = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("ddMMyyyyHHmmss");
-
         super.terminatedQueue.getAll().sort(Comparator.comparingInt(BCP::getFirstUnitTimeExecuted));
         super.terminatedQueue.showAll();
 
-        try {
-            FileWriter writer = new FileWriter(super.resultsFilePath + "process_list_" + this.algorithm + "_" + formatter.format(date) + "_.csv");
-            writer.write("process_id,turnaround_time\n");
-            for (BCP bcp : this.terminatedQueue.getAll()) {
-                writer.write(bcp.getIdProcess() + "," + bcp.getTurnaroundTime() + "\n");
-            }
-            
-            writer.close();
-        } catch(IOException e) {
-            e.printStackTrace();
+        int arraySize = terminatedQueue.getAll().size();
+        int[] idProcessData = new int[arraySize];
+        int[] turnaroundTimeData = new int[arraySize];
+
+        for (int i = 0; i < arraySize; i++) {
+            idProcessData[i] = terminatedQueue.get(i).getIdProcess();
+            turnaroundTimeData[i] = terminatedQueue.get(i).getTurnaroundTime();
         }
-      
+
+        FunctionUtils.writeFile(super.header, idProcessData, turnaroundTimeData, super.algorithm, "process_list");
+
     }
 }

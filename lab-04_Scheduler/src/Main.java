@@ -34,7 +34,11 @@ public class Main {
         Scheduler scheduler = new Scheduler(algorithm, readyQueue);
         scheduler.run();
 
-        ExecutionReport executionReport = FunctionUtils.defineExitType(args[2], scheduler.getTerminatedQueue(), filename, args[1], quantum);
+        ExecutionReport executionReport = FunctionUtils.defineExitType(args[2],
+                scheduler.getTerminatedQueue(),
+                args[1],
+                quantum);
+
         executionReport.saveResult();
     }
 }

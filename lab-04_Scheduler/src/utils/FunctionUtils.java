@@ -9,16 +9,18 @@ import model.BCP;
 import model.Process;
 import model.queue.Queue;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class FunctionUtils {
     private static final String CSV_DIVISOR = ",";
     private static final String CSV_DATA_DIRECTORY = "data";
+    private static final String CSV_RESULT_DIRECTORY = "result";
+    private static final String SRC_DIRECTORY = "src";
+    private static final String EXTENSION_FILE = ".csv";
 
     public static String getPathProject() {
         Path currentRelativePath = Paths.get("");
@@ -26,7 +28,7 @@ public class FunctionUtils {
     }
 
     public static void parseCSV(String filename, Queue readyQueue) {
-        String path = getPathProject() + File.separator + CSV_DATA_DIRECTORY + File.separator;
+        String path = getPathProject() + File.separator + SRC_DIRECTORY + File.separator + CSV_DATA_DIRECTORY + File.separator;
         path += filename;
 
         BufferedReader br = null;
@@ -96,14 +98,17 @@ public class FunctionUtils {
         }
     }
 
-    public static ExecutionReport defineExitType(String arg, Queue terminatedQueue, String outputFile, String algorithm, int quantum) {
+    public static ExecutionReport defineExitType(String arg,
+                                                 Queue terminatedQueue,
+                                                 String algorithm,
+                                                 int quantum) {
         int exitType = Integer.parseInt(arg);
 
         switch (exitType) {
             case 1:
-                return new Statistic(terminatedQueue, outputFile, algorithm, quantum);
+                return new Statistic(terminatedQueue, algorithm, quantum);
             case 2:
-                return new ProcessList(terminatedQueue, outputFile, algorithm, quantum);
+                return new ProcessList(terminatedQueue, algorithm, quantum);
             default:
                 throw new ExitTypeException();
         }
@@ -124,5 +129,70 @@ public class FunctionUtils {
 
         if (((args.length == 1) && !(args[0].toLowerCase().equals("--help"))) || ((args.length != 1) && (args.length != 3) && (args.length != 4)))
             throw new IllegalArgumentException(messageException);
+    }
+
+    public static void writeFile(String[] header, float[] data, String algorithm, String exitType) {
+        try {
+            Date date = new Date();
+            SimpleDateFormat formatter = new SimpleDateFormat("ddMMyyyyHHmmss");
+
+            String path = getPathProject() + File.separator + SRC_DIRECTORY + File.separator + CSV_RESULT_DIRECTORY + File.separator;
+            new File(path).mkdir();
+
+            BufferedWriter writer = new BufferedWriter(
+                    new FileWriter(path + exitType + "_" + algorithm + "_" + formatter.format(date) + EXTENSION_FILE));
+
+            StringBuilder headerStr = new StringBuilder();
+            StringBuilder dataStr = new StringBuilder();
+
+            for (int i = 0; i < header.length; i++) {
+                headerStr.append(header[i]).append(CSV_DIVISOR);
+                dataStr.append(data[i]).append(CSV_DIVISOR);
+            }
+
+            headerStr.deleteCharAt(headerStr.length() - 1);
+            dataStr.deleteCharAt(dataStr.length() - 1);
+            headerStr.append("\n");
+            dataStr.append("\n");
+
+            writer.write(String.valueOf(headerStr));
+            writer.write(String.valueOf(dataStr));
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void writeFile(String[] header, int[] data1, int[] data2, String algorithm, String exitType) {
+        try {
+            Date date = new Date();
+            SimpleDateFormat formatter = new SimpleDateFormat("ddMMyyyyHHmmss");
+
+            String path = getPathProject() + File.separator + SRC_DIRECTORY + File.separator + CSV_RESULT_DIRECTORY + File.separator;
+            new File(path).mkdir();
+
+            BufferedWriter writer = new BufferedWriter(
+                    new FileWriter(path + exitType + "_" + algorithm + "_" + formatter.format(date) + EXTENSION_FILE));
+
+            StringBuilder headerStr = new StringBuilder();
+            StringBuilder dataStr = new StringBuilder();
+
+            for (String s : header) {
+                headerStr.append(s).append(CSV_DIVISOR);
+            }
+
+            for (int i = 0; i < data1.length; i++) {
+                dataStr.append(data1[i]).append(CSV_DIVISOR).append(data2[i]).append("\n");
+            }
+
+            headerStr.deleteCharAt(headerStr.length() - 1);
+            headerStr.append("\n");
+
+            writer.write(String.valueOf(headerStr));
+            writer.write(String.valueOf(dataStr));
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
