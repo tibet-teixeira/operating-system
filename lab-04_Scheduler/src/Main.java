@@ -35,7 +35,6 @@ public class Main {
         scheduler.run();
 
         ExecutionReport executionReport = FunctionUtils.defineExitType(args[2], scheduler.getTerminatedQueue(), filename, args[1], quantum);
-        executionReport.showResult();
         executionReport.saveResult();
     }
 }
