@@ -28,7 +28,9 @@ public class FunctionUtils {
     }
 
     public static void parseCSV(String filename, Queue readyQueue) {
-        String path = getPathProject() + File.separator + SRC_DIRECTORY + File.separator + CSV_DATA_DIRECTORY + File.separator;
+        String path = getPathProject() + File.separator
+                + SRC_DIRECTORY + File.separator
+                + CSV_DATA_DIRECTORY + File.separator;
         path += filename;
 
         BufferedReader br = null;
@@ -127,20 +129,39 @@ public class FunctionUtils {
     public static void verifyArgs(String[] args) {
         String messageException = "Arguments do not follow the standard. Check the correct way in --help";
 
-        if (((args.length == 1) && !(args[0].toLowerCase().equals("--help"))) || ((args.length != 1) && (args.length != 3) && (args.length != 4)))
+        if (((args.length == 1) && !(args[0].toLowerCase().equals("--help")))
+                || ((args.length != 1) && (args.length != 3) && (args.length != 4)))
             throw new IllegalArgumentException(messageException);
     }
 
     public static void writeFile(String[] header, float[] data, String algorithm, String exitType) {
+        writeFile(header, data, algorithm, exitType, 0);
+    }
+
+    public static void writeFile(String[] header, float[] data, String algorithm, String exitType, int quantum) {
         try {
             Date date = new Date();
             SimpleDateFormat formatter = new SimpleDateFormat("ddMMyyyyHHmmss");
 
-            String path = getPathProject() + File.separator + SRC_DIRECTORY + File.separator + CSV_RESULT_DIRECTORY + File.separator;
-            new File(path).mkdir();
+            String path = getPathProject() + File.separator
+                    + SRC_DIRECTORY + File.separator
+                    + CSV_RESULT_DIRECTORY + File.separator;
 
+            String filename;
+
+            if (algorithm.toLowerCase().equals("rr")) {
+                filename = path + exitType + "_"
+                        + algorithm + "_quantum_" + quantum + "_"
+                        + formatter.format(date) + EXTENSION_FILE;
+            } else {
+                filename = path + exitType + "_"
+                        + algorithm + "_"
+                        + formatter.format(date) + EXTENSION_FILE;
+            }
+
+            new File(path).mkdir();
             BufferedWriter writer = new BufferedWriter(
-                    new FileWriter(path + exitType + "_" + algorithm + "_" + formatter.format(date) + EXTENSION_FILE));
+                    new FileWriter(filename));
 
             StringBuilder headerStr = new StringBuilder();
             StringBuilder dataStr = new StringBuilder();
@@ -163,16 +184,37 @@ public class FunctionUtils {
         }
     }
 
-    public static void writeFile(String[] header, int[] data1, int[] data2, String algorithm, String exitType) {
+    public static void writeFile(String[] header,
+                                 int[] data1, int[] data2,
+                                 String algorithm, String exitType) {
+        writeFile(header, data1, data2, algorithm, exitType, 0);
+    }
+
+    public static void writeFile(String[] header,
+                                 int[] data1, int[] data2,
+                                 String algorithm, String exitType, int quantum) {
         try {
             Date date = new Date();
             SimpleDateFormat formatter = new SimpleDateFormat("ddMMyyyyHHmmss");
 
-            String path = getPathProject() + File.separator + SRC_DIRECTORY + File.separator + CSV_RESULT_DIRECTORY + File.separator;
-            new File(path).mkdir();
+            String path = getPathProject() + File.separator
+                    + SRC_DIRECTORY + File.separator
+                    + CSV_RESULT_DIRECTORY + File.separator;
+            String filename;
 
+            if (algorithm.toLowerCase().equals("rr")) {
+                filename = path + exitType + "_"
+                        + algorithm + "_quantum_" + quantum + "_"
+                        + formatter.format(date) + EXTENSION_FILE;
+            } else {
+                filename = path + exitType + "_"
+                        + algorithm + "_"
+                        + formatter.format(date) + EXTENSION_FILE;
+            }
+
+            new File(path).mkdir();
             BufferedWriter writer = new BufferedWriter(
-                    new FileWriter(path + exitType + "_" + algorithm + "_" + formatter.format(date) + EXTENSION_FILE));
+                    new FileWriter(filename));
 
             StringBuilder headerStr = new StringBuilder();
             StringBuilder dataStr = new StringBuilder();

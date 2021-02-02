@@ -27,7 +27,19 @@ public class ProcessList extends ExecutionReport {
             turnaroundTimeData[i] = terminatedQueue.get(i).getTurnaroundTime();
         }
 
-        FunctionUtils.writeFile(super.header, idProcessData, turnaroundTimeData, super.algorithm, "process_list");
-
+        if (algorithm.toLowerCase().equals("rr")) {
+            FunctionUtils.writeFile(super.header,
+                    idProcessData,
+                    turnaroundTimeData,
+                    super.algorithm,
+                    "process_list",
+                    super.quantum);
+        } else {
+            FunctionUtils.writeFile(super.header,
+                    idProcessData,
+                    turnaroundTimeData,
+                    super.algorithm,
+                    "process_list");
+        }
     }
 }

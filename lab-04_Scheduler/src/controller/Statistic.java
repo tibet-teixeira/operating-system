@@ -5,7 +5,15 @@ import model.queue.Queue;
 import utils.FunctionUtils;
 
 public class Statistic extends ExecutionReport {
-    private static String[] HEADER = new String[]{"time_total", "cpu_usage", "throughput_mean", "turnaround_mean", "waiting_time_mean", "response_time_mean", "context_switch_mean", "number_of_processes"};
+    private static String[] HEADER = new String[]
+            {"time_total",
+                    "cpu_usage",
+                    "throughput_mean",
+                    "turnaround_mean",
+                    "waiting_time_mean",
+                    "response_time_mean",
+                    "context_switch_mean",
+                    "number_of_processes"};
 
     public Statistic(Queue terminatedQueue, String algorithm, int quantum) {
         super(terminatedQueue, HEADER, algorithm, quantum);
@@ -61,9 +69,30 @@ public class Statistic extends ExecutionReport {
                 + "Context Switch Mean %.2f - Number of Processes %d\n";
 
         System.out.println(statisticHeader);
-        System.out.printf(statisticBody, timeTotalProcessed, cpuUsage, throughputMean, turnaroundMean, waitingTimeMean, responseTimeMean, contextSwitchMean, numberOfProcesses);
+        System.out.printf(statisticBody,
+                timeTotalProcessed,
+                cpuUsage,
+                throughputMean,
+                turnaroundMean,
+                waitingTimeMean,
+                responseTimeMean,
+                contextSwitchMean,
+                numberOfProcesses);
 
-        float[] data = new float[] {timeTotalProcessed, cpuUsage, throughputMean, turnaroundMean, waitingTimeMean, responseTimeMean, contextSwitchMean, numberOfProcesses};
-        FunctionUtils.writeFile(this.header, data, this.algorithm, "statistic");
+        float[] data = new float[]
+                {timeTotalProcessed,
+                        cpuUsage,
+                        throughputMean,
+                        turnaroundMean,
+                        waitingTimeMean,
+                        responseTimeMean,
+                        contextSwitchMean,
+                        numberOfProcesses};
+
+        if (algorithm.toLowerCase().equals("rr")) {
+            FunctionUtils.writeFile(this.header, data, this.algorithm, "statistic", this.quantum);
+        } else {
+            FunctionUtils.writeFile(this.header, data, this.algorithm, "statistic");
+        }
     }
 }
