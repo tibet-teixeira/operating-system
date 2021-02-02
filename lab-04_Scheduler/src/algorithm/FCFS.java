@@ -39,6 +39,7 @@ public class FCFS extends Algorithm {
             }
 
             process = bcp.getProcess();
+            bcp.addRunningTimes();
             runningQueue.add(bcp);
 
             waitingTime = Math.max(currentUnitTime - process.getArrivalTime(), 0);

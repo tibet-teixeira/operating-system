@@ -1,19 +1,38 @@
 package controller;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Comparator;
+import java.util.Date;
+
 import model.BCP;
 import model.queue.Queue;
 
-import java.util.Comparator;
-
 public class ProcessList extends ExecutionReport {
-    public ProcessList(Queue terminatedQueue) {
-        super(terminatedQueue);
+    public ProcessList(Queue terminatedQueue, String outputFile, String algorithm, int quantum) {
+        super(terminatedQueue, outputFile, algorithm, quantum);
     }
 
     @Override
-    public void showResult() {
-        System.out.println("PROCESS LIST");
+    public void saveResult() {
+        Date date = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("ddMMyyyyHHmmss");
+
         super.terminatedQueue.getAll().sort(Comparator.comparingInt(BCP::getFirstUnitTimeExecuted));
         super.terminatedQueue.showAll();
+
+        try {
+            FileWriter writer = new FileWriter(super.resultsFilePath + "process_list_" + this.algorithm + "_" + formatter.format(date) + "_.csv");
+            writer.write("process_id,turnaround_time\n");
+            for (BCP bcp : this.terminatedQueue.getAll()) {
+                writer.write(bcp.getIdProcess() + "," + bcp.getTurnaroundTime() + "\n");
+            }
+            
+            writer.close();
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+      
     }
 }

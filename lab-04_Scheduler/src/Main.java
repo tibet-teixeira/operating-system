@@ -20,12 +20,13 @@ public class Main {
 
         String filename = args[0];
         Algorithm algorithm = FunctionUtils.defineAlgorithm(args[1]);
-
+        int quantum = 0;
+    
         if (algorithm instanceof RoundRobin) {
             if (args.length == 3)
-                ((RoundRobin) algorithm).setQuantum(1);
+                ((RoundRobin) algorithm).setQuantum(quantum = 1);
             else
-                ((RoundRobin) algorithm).setQuantum(FunctionUtils.defineQuantum(args[3]));
+                ((RoundRobin) algorithm).setQuantum(quantum = FunctionUtils.defineQuantum(args[3]));
         }
 
         Queue readyQueue = new ReadyQueue();
@@ -33,7 +34,7 @@ public class Main {
         Scheduler scheduler = new Scheduler(algorithm, readyQueue);
         scheduler.run();
 
-        ExecutionReport executionReport = FunctionUtils.defineExitType(args[2], scheduler.getTerminatedQueue());
-        executionReport.showResult();
+        ExecutionReport executionReport = FunctionUtils.defineExitType(args[2], scheduler.getTerminatedQueue(), filename, args[1], quantum);
+        executionReport.saveResult();
     }
 }

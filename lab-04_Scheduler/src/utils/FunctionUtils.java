@@ -19,7 +19,6 @@ import java.nio.file.Paths;
 public class FunctionUtils {
     private static final String CSV_DIVISOR = ",";
     private static final String CSV_DATA_DIRECTORY = "data";
-    private static final String SRC_DIRECTORY = "src";
 
     public static String getPathProject() {
         Path currentRelativePath = Paths.get("");
@@ -27,7 +26,7 @@ public class FunctionUtils {
     }
 
     public static void parseCSV(String filename, Queue readyQueue) {
-        String path = getPathProject() + File.separator + SRC_DIRECTORY + File.separator + CSV_DATA_DIRECTORY + File.separator;
+        String path = getPathProject() + File.separator + CSV_DATA_DIRECTORY + File.separator;
         path += filename;
 
         BufferedReader br = null;
@@ -97,14 +96,14 @@ public class FunctionUtils {
         }
     }
 
-    public static ExecutionReport defineExitType(String arg, Queue terminatedQueue) {
+    public static ExecutionReport defineExitType(String arg, Queue terminatedQueue, String outputFile, String algorithm, int quantum) {
         int exitType = Integer.parseInt(arg);
 
         switch (exitType) {
             case 1:
-                return new Statistic(terminatedQueue);
+                return new Statistic(terminatedQueue, outputFile, algorithm, quantum);
             case 2:
-                return new ProcessList(terminatedQueue);
+                return new ProcessList(terminatedQueue, outputFile, algorithm, quantum);
             default:
                 throw new ExitTypeException();
         }
