@@ -33,6 +33,7 @@ public class SJFP extends Algorithm {
         Process process;
         int currentUnitTime = 0;
         int waitingTime;
+        int lastProcessIDExecuted = -1;
 
         final int CPU_TIME_EXECUTED = 1;
 
@@ -47,7 +48,10 @@ public class SJFP extends Algorithm {
             }
 
             process = bcp.getProcess();
-            bcp.addRunningTimes();
+            if (process.getId() != lastProcessIDExecuted) {
+                bcp.addRunningTimes();
+                lastProcessIDExecuted = process.getId();
+            }
             runningQueue.add(bcp);
 
             waitingTime = currentUnitTime - bcp.getLastUnitTimeExecuted();
