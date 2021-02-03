@@ -33,7 +33,8 @@ public class RoundRobin extends Algorithm {
         int currentUnitTime = 0;
         int totalRemainingBurst;
         int waitingTime;
-
+        int lastProcessIDExecuted = -1;
+        
         while (readyQueue.length() > 0) {
             bcp = getNextJob(readyQueue, currentUnitTime);
 
@@ -45,7 +46,10 @@ public class RoundRobin extends Algorithm {
             }
 
             process = bcp.getProcess();
-            bcp.addRunningTimes();
+            if (process.getId() != lastProcessIDExecuted) {
+                bcp.addRunningTimes();
+                lastProcessIDExecuted = process.getId();
+            }
             runningQueue.add(bcp);
             totalRemainingBurst = process.getBurstTime() - bcp.getTotalBurstExecuted();
 
