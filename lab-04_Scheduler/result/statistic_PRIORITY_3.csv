@@ -1,0 +1,2 @@
+time_total,cpu_usage,throughput_mean,turnaround_mean,waiting_time_mean,response_time_mean,context_switch_mean,number_of_processes
+162.0,98.14815,1.0,105.75,65.25,65.25,0.018518519,4.0
